@@ -1,0 +1,387 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled0.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOC8UhauZqaosMurfsUZwdi",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/mohankumaranem/basics-of-data-science/blob/master/Assingnment1\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "hujBajfkZH-7",
+        "colab_type": "text"
+      },
+      "source": [
+        "1) Write a function in python that inputs a dataframe and identify which columns have date in them. Using these date columns make new columns which are difference between these columns taking 2 at a time. (for instance if there is date1, date2, date3 columns, output should be like date1-date2, date2-date3, date1-date3). For this problem only, print out data in the colab.\n",
+        "\n",
+        "Thing to consider\n",
+        "\n",
+        "· Date column might have some invalid entries in them\n",
+        "\n",
+        "· Date can be of different format throughout the column\n",
+        "\n",
+        "· Code should be efficient and fast\n",
+        "\n",
+        "· Code should be well commented and easy to interpret\n",
+        "\n",
+        "· Used google Colab\n",
+        "\n",
+        "· Code should be robust enough to run on any dataset\n",
+        "\n",
+        "· here dataset made by me was made in excel hence it the result will be constant output because i used excel short cuts to create dataset."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "1aSDqfzDA2bu",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "outputId": "4f007926-7c82-47d9-b1a4-6ff086b9dbc8"
+      },
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import datetime  as dt\n",
+        "\"\"\"importing all necessary libraries for the code\"\"\""
+      ],
+      "execution_count": 219,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            },
+            "text/plain": [
+              "'importing all necessary libraries for the code'"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 219
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "JmZyEgEOOipr",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 168
+        },
+        "outputId": "5d6aa95d-d627-4308-8863-5ce5b8b38f7b"
+      },
+      "source": [
+        "df=pd.read_excel('Book2.xlsx')\n",
+        "df.head()\n",
+        "df.dtypes"
+      ],
+      "execution_count": 215,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Date 1               object\n",
+              "Category             object\n",
+              "DayOfWeek            object\n",
+              "Date 2       datetime64[ns]\n",
+              "Address              object\n",
+              "Date 3       datetime64[ns]\n",
+              "Location             object\n",
+              "Date 4       datetime64[ns]\n",
+              "dtype: object"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 215
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "PQ-0wRsnAPJu",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 195
+        },
+        "outputId": "a2e98c38-3597-4617-af33-36923d8b4cc5"
+      },
+      "source": [
+        "j=df.columns.to_list()\n",
+        "for i  in j:\n",
+        "  df1[i]=pd.to_datetime(df[i],errors='coerce')\n",
+        "df1 = df1.dropna(how='all', axis=1)\n",
+        "df1.head()"
+      ],
+      "execution_count": 216,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Date 1</th>\n",
+              "      <th>Date 2</th>\n",
+              "      <th>Date 3</th>\n",
+              "      <th>Date 4</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>NaT</td>\n",
+              "      <td>1999-01-07</td>\n",
+              "      <td>1999-04-04</td>\n",
+              "      <td>2017-06-05</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>2015-02-02</td>\n",
+              "      <td>1999-01-08</td>\n",
+              "      <td>1999-04-05</td>\n",
+              "      <td>2017-06-06</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>2015-02-03</td>\n",
+              "      <td>1999-01-09</td>\n",
+              "      <td>1999-04-06</td>\n",
+              "      <td>2017-06-07</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>NaT</td>\n",
+              "      <td>1999-01-10</td>\n",
+              "      <td>1999-04-07</td>\n",
+              "      <td>2017-06-08</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>2015-02-05</td>\n",
+              "      <td>1999-01-11</td>\n",
+              "      <td>1999-04-08</td>\n",
+              "      <td>2017-06-09</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "      Date 1     Date 2     Date 3     Date 4\n",
+              "0        NaT 1999-01-07 1999-04-04 2017-06-05\n",
+              "1 2015-02-02 1999-01-08 1999-04-05 2017-06-06\n",
+              "2 2015-02-03 1999-01-09 1999-04-06 2017-06-07\n",
+              "3        NaT 1999-01-10 1999-04-07 2017-06-08\n",
+              "4 2015-02-05 1999-01-11 1999-04-08 2017-06-09"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 216
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "kNS80SEUO8Bs",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 212
+        },
+        "outputId": "0dec4dec-ac17-42a7-c08b-99b93cc2edcd"
+      },
+      "source": [
+        "k=np.asanyarray(df1.select_dtypes(include=['datetime64']).columns)\n",
+        "print(k)\n",
+        "for i in  range(0,len(k)):\n",
+        "  if i==len(k)-1:\n",
+        "    df1['date'+str(i+1)+'-date'+str(len(k)-i)]=(df1[k[0]]-df1[k[-1]]).dt.days\n",
+        "  else:    \n",
+        "    df1['date'+str(i+1)+'-date'+str(i+2)]=(df1[k[i]]-df1[k[i+1]]).dt.days\n",
+        "df1.head()"
+      ],
+      "execution_count": 218,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "['Date 1' 'Date 2' 'Date 3' 'Date 4']\n"
+          ],
+          "name": "stdout"
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Date 1</th>\n",
+              "      <th>Date 2</th>\n",
+              "      <th>Date 3</th>\n",
+              "      <th>Date 4</th>\n",
+              "      <th>date1-date2</th>\n",
+              "      <th>date2-date3</th>\n",
+              "      <th>date3-date4</th>\n",
+              "      <th>date4-date1</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>NaT</td>\n",
+              "      <td>1999-01-07</td>\n",
+              "      <td>1999-04-04</td>\n",
+              "      <td>2017-06-05</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>-87</td>\n",
+              "      <td>-6637</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>2015-02-02</td>\n",
+              "      <td>1999-01-08</td>\n",
+              "      <td>1999-04-05</td>\n",
+              "      <td>2017-06-06</td>\n",
+              "      <td>5869.0</td>\n",
+              "      <td>-87</td>\n",
+              "      <td>-6637</td>\n",
+              "      <td>-855.0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>2015-02-03</td>\n",
+              "      <td>1999-01-09</td>\n",
+              "      <td>1999-04-06</td>\n",
+              "      <td>2017-06-07</td>\n",
+              "      <td>5869.0</td>\n",
+              "      <td>-87</td>\n",
+              "      <td>-6637</td>\n",
+              "      <td>-855.0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>NaT</td>\n",
+              "      <td>1999-01-10</td>\n",
+              "      <td>1999-04-07</td>\n",
+              "      <td>2017-06-08</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>-87</td>\n",
+              "      <td>-6637</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>2015-02-05</td>\n",
+              "      <td>1999-01-11</td>\n",
+              "      <td>1999-04-08</td>\n",
+              "      <td>2017-06-09</td>\n",
+              "      <td>5869.0</td>\n",
+              "      <td>-87</td>\n",
+              "      <td>-6637</td>\n",
+              "      <td>-855.0</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "      Date 1     Date 2     Date 3  ... date2-date3  date3-date4  date4-date1\n",
+              "0        NaT 1999-01-07 1999-04-04  ...         -87        -6637          NaN\n",
+              "1 2015-02-02 1999-01-08 1999-04-05  ...         -87        -6637       -855.0\n",
+              "2 2015-02-03 1999-01-09 1999-04-06  ...         -87        -6637       -855.0\n",
+              "3        NaT 1999-01-10 1999-04-07  ...         -87        -6637          NaN\n",
+              "4 2015-02-05 1999-01-11 1999-04-08  ...         -87        -6637       -855.0\n",
+              "\n",
+              "[5 rows x 8 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 218
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "C4S_8tU9UtEj",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
